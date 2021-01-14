@@ -2,13 +2,18 @@ package com.example.demo.entities;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.example.demo.entities.enums.OrderStatus;
@@ -17,7 +22,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 @Entity
 @Table(name = "tb_order")
 public class Order implements Serializable {
-
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -30,11 +34,13 @@ public class Order implements Serializable {
 	private Integer orderStatus;
 
 	@ManyToOne
-	@JoinColumn(name = "cliente_id")
+	@JoinColumn(name = "client_id")
 	private User client;
 
+	@OneToMany(mappedBy = "id.order")
+	private Set<OrderItem> items = new HashSet<>();
+
 	public Order() {
-		super();
 	}
 
 	public Order(Long id, Instant moment, OrderStatus orderStatus, User client) {
@@ -79,6 +85,18 @@ public class Order implements Serializable {
 		this.client = client;
 	}
 
+	public Set<OrderItem> getItems() {
+		return items;
+	}
+
+	public Double getTotal() {
+		double sum = 0.0;
+		for (OrderItem x : items) {
+			sum += x.getSubTotal();
+		}
+		return sum;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -103,5 +121,4 @@ public class Order implements Serializable {
 			return false;
 		return true;
 	}
-
 }

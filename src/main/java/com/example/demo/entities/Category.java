@@ -16,7 +16,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Table(name = "tb_category")
 public class Category implements Serializable {
-
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -28,18 +27,13 @@ public class Category implements Serializable {
 	@ManyToMany(mappedBy = "categories")
 	private Set<Product> products = new HashSet<>();
 
-	public Set<Product> getProducts() {
-		return products;
+	public Category() {
 	}
 
 	public Category(Long id, String name) {
 		super();
 		this.id = id;
 		this.name = name;
-	}
-
-	public Category() {
-		super();
 	}
 
 	public Long getId() {
@@ -56,6 +50,10 @@ public class Category implements Serializable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Set<Product> getProducts() {
+		return products;
 	}
 
 	@Override
@@ -82,5 +80,4 @@ public class Category implements Serializable {
 			return false;
 		return true;
 	}
-
 }

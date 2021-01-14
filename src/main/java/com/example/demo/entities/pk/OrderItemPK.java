@@ -11,7 +11,6 @@ import com.example.demo.entities.Product;
 
 @Embeddable
 public class OrderItemPK implements Serializable {
-
 	private static final long serialVersionUID = 1L;
 
 	@ManyToOne
@@ -68,5 +67,4 @@ public class OrderItemPK implements Serializable {
 			return false;
 		return true;
 	}
-
 }
